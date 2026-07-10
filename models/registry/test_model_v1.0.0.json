@@ -1,0 +1,11 @@
+{
+    "model_name": "test_model",
+    "version": "1.0.0",
+    "timestamp": "2026-07-09T14:11:33.042358",
+    "metrics": {
+        "accuracy": 0.9
+    },
+    "parameters": {
+        "alpha": 1.0
+    }
+}

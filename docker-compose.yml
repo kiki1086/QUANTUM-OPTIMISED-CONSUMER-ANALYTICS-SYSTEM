@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  # Relational Database & Feature Store
+  postgres:
+    image: postgres:15
+    container_name: qocas_postgres
+    environment:
+      POSTGRES_USER: qocas_user
+      POSTGRES_PASSWORD: qocas_password
+      POSTGRES_DB: qocas_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U qocas_user -d qocas_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Caching Layer
+  redis:
+    image: redis:7-alpine
+    container_name: qocas_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Object Storage (Models & Datasets)
+  minio:
+    image: minio/minio:latest
+    container_name: qocas_minio
+    environment:
+      MINIO_ROOT_USER: qocas_admin
+      MINIO_ROOT_PASSWORD: qocas_password_minio
+    ports:
+      - "9000:9000"  # API
+      - "9001:9001"  # Console UI
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:
