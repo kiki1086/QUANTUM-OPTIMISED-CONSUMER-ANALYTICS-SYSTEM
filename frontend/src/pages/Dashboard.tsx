@@ -4,7 +4,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, PieChart, Pie, Cell, Legend,
   RadarChart, Radar, PolarGrid, PolarAngleAxis,
-  ScatterChart, Scatter, ZAxis, LineChart, Line
+  ScatterChart, Scatter, ZAxis
 } from 'recharts';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -381,7 +381,7 @@ export default function Dashboard() {
                       <PieChart>
                         <Pie data={data.gender_dist} dataKey="value" nameKey="name"
                           cx="50%" cy="50%" outerRadius={90} innerRadius={45} paddingAngle={4}
-                          label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                          label={({ name, percent }: any) => `${name || 'Unknown'} ${((percent || 0) * 100).toFixed(0)}%`}
                           labelLine={false}
                         >
                           {data.gender_dist.map((_, i) => <Cell key={i} fill={GRAD[i % GRAD.length]} />)}

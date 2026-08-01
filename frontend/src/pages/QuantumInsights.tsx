@@ -1,10 +1,9 @@
 import React, { useState, useCallback } from 'react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  RadarChart, Radar, PolarGrid, PolarAngleAxis,
   ScatterChart, Scatter, ZAxis,
   PieChart, Pie, Cell, Legend,
-  LineChart, Line,
+  LineChart, Line
 } from 'recharts';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -333,7 +332,7 @@ function QSVCPanel({ r }: { r: AlgoResult }) {
   const rocQ  = r.visualization?.roc_qsvc ?? [];
   const rocX  = r.visualization?.roc_xgb  ?? [];
   const cmQ   = r.visualization?.confusion_qsvc ?? [[0,0],[0,0]];
-  const cmX   = r.visualization?.confusion_xgb  ?? [[0,0],[0,0]];
+
   const rocData = rocQ.slice(0, 50).map((d: any, i: number) => ({
     fpr: d.fpr, qsvc: d.tpr, xgb: rocX[i]?.tpr ?? null
   }));
