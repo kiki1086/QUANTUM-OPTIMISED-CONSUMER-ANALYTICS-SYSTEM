@@ -238,8 +238,9 @@ function LookalikePanelComp({ initialData, sessionId }: {
     if (!sessionId) return;
     setLoading(true); setError(null);
     try {
+      const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
       const res = await fetch(
-        `http://localhost:8000/api/v1/quantum/lookalike?session_id=${sessionId}&query_customer_idx=${idx}&top_k=10`
+        `${API_BASE}/api/v1/quantum/lookalike?session_id=${sessionId}&query_customer_idx=${idx}&top_k=10`
       );
       if (!res.ok) { const e = await res.json(); throw new Error(e.detail || 'Lookalike failed'); }
       const json = await res.json();
@@ -525,7 +526,8 @@ export default function QuantumInsights({ sessionId }: Props) {
     setLoading(true); setError(null);
     try {
       // Note: no query_customer_idx here — lookalike is fetched independently
-      const res = await fetch('http://localhost:8000/api/v1/quantum/analyze', {
+      const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+      const res = await fetch(`${API_BASE}/api/v1/quantum/analyze`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ session_id: sessionId, n_clusters: 4 }),
@@ -595,7 +597,7 @@ export default function QuantumInsights({ sessionId }: Props) {
               <span key={n} className="px-2 py-1 bg-gray-800 border border-gray-700 rounded-full animate-pulse">{n}</span>
             ))}
           </div>
-          <p className="text-gray-600 text-sm">This may take 30–90 seconds for 200 customers</p>
+          <p className="text-gray-600 text-sm">This may take 5–15 seconds for 200 customers</p>
         </div>
       )}
 

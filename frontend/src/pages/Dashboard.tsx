@@ -134,7 +134,8 @@ export default function Dashboard() {
     const form = new FormData();
     form.append('file', file);
     try {
-      const res = await fetch('http://localhost:8000/api/v1/ingestion/csv-upload', {
+      const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+      const res = await fetch(`${API_BASE}/api/v1/ingestion/csv-upload`, {
         method: 'POST', body: form,
       });
       if (!res.ok) { const e = await res.json(); throw new Error(e.detail || 'Upload failed'); }
